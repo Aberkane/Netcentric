@@ -203,7 +203,7 @@ public class MainActivity extends ServiceActivity {
                 float[] args = getRandomLedArray();
                 float sliderValue = (float)progress/10;
                 args[0] = sliderValue;
-                //getMbed().manager.write(new MbedRequest(COMMAND_R, args));
+                getMbed().manager.write(new MbedRequest(COMMAND_R, args));
                 editText.setText(String.valueOf(sliderValue));
 
                 BluetoothService bluetooth = getBluetooth();
@@ -217,6 +217,8 @@ public class MainActivity extends ServiceActivity {
     }
 
     private void refreshBluetoothControls() {
+        seekBar = (SeekBar)findViewById(R.id.seekBar);
+
         String slaveStatus = "Status not available";
         String slaveButton = "Start listening";
         String ownAddress = "Not available";
@@ -240,6 +242,8 @@ public class MainActivity extends ServiceActivity {
             }
 
             if (bluetooth.slave.isConnected()) {
+
+                seekBar.setEnabled(false);
                 slaveStatus = "Connected to " + bluetooth.slave.getRemoteDevice();
                 slaveButton = "Disconnect";
                 allowPingMaster = true;
@@ -259,6 +263,8 @@ public class MainActivity extends ServiceActivity {
                     }
                 });
             } else {
+                seekBar.setEnabled(true);
+
                 slaveStatus = "Not listening";
                 slaveButton = "Start listening";
                 listenerButton.setOnClickListener(new View.OnClickListener() {
@@ -362,6 +368,7 @@ public class MainActivity extends ServiceActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            editText = (TextView)findViewById(R.id.editText);
             String action = intent.getAction();
 
             // Refresh on most Bluetooth or mBed events.
@@ -387,6 +394,7 @@ public class MainActivity extends ServiceActivity {
                     float[] args = getRandomLedArray();
                     args[0] = Float.valueOf(String.valueOf(obj));
                     toastShort("From master:\n" + String.valueOf(obj));
+                    editText.setText(String.valueOf(args[0]));
                     getMbed().manager.write(new MbedRequest(COMMAND_R, args));
 
                 } else {
