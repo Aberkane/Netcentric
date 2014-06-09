@@ -197,7 +197,8 @@ public class MainActivity extends ServiceActivity {
             public void onStartTrackingTouch(SeekBar seekBar) {
                 // TODO Auto-generated method stub
             }
-
+            // On change reset the value in the editText widget and send the new servo position to
+            // the mBed.
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 float[] args = new float[4];
@@ -206,6 +207,7 @@ public class MainActivity extends ServiceActivity {
                 getMbed().manager.write(new MbedRequest(COMMAND_R, args));
                 editText.setText(String.valueOf(sliderValue));
 
+                //If the phone is a master, send the position to all slaves.
                 BluetoothService bluetooth = getBluetooth();
                 if (bluetooth != null) {
                     bluetooth.master.sendToAll(sliderValue);
@@ -242,7 +244,7 @@ public class MainActivity extends ServiceActivity {
             }
 
             if (bluetooth.slave.isConnected()) {
-
+                // Disabel the slider if the device is in slave mode. 
                 seekBar.setEnabled(false);
                 slaveStatus = "Connected to " + bluetooth.slave.getRemoteDevice();
                 slaveButton = "Disconnect";
@@ -394,6 +396,8 @@ public class MainActivity extends ServiceActivity {
                     float[] args = getRandomLedArray();
                     args[0] = Float.valueOf(String.valueOf(obj));
                     toastShort("From master:\n" + String.valueOf(obj));
+                    // Set the received position in the editText widget and send the data to 
+                    // the mBed.
                     editText.setText(String.valueOf(args[0]));
                     getMbed().manager.write(new MbedRequest(COMMAND_R, args));
 
