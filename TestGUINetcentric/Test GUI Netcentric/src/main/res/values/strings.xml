@@ -4,5 +4,6 @@
     <string name="app_name">Test GUI Netcentric</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <color name="red">#FF0000</color>
 
 </resources>
