@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/GUI Netcentric/GUI Netcentric.iml" filepath="$PROJECT_DIR$/GUI Netcentric/GUI Netcentric.iml" />
+      <module fileurl="file://$PROJECT_DIR$/GUINetcentric.iml" filepath="$PROJECT_DIR$/GUINetcentric.iml" />
+    </modules>
+  </component>
+</project>
+

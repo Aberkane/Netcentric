@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/joystickView/joystickView.iml" filepath="$PROJECT_DIR$/joystickView/joystickView.iml" />
+      <module fileurl="file://$PROJECT_DIR$/testtestjoystick.iml" filepath="$PROJECT_DIR$/testtestjoystick.iml" />
+      <module fileurl="file://$PROJECT_DIR$/testtestjoystick/testtestjoystick-testtestjoystick.iml" filepath="$PROJECT_DIR$/testtestjoystick/testtestjoystick-testtestjoystick.iml" />
+    </modules>
+  </component>
+</project>
+

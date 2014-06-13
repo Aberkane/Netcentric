@@ -4,11 +4,16 @@ import com.example.testguinetcentric.testguinetcentric.util.SystemUiHider;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 
 
 /**
@@ -54,6 +59,20 @@ public class FullscreenActivity extends Activity {
 
         final View controlsView = findViewById(R.id.fullscreen_content_controls);
         final View contentView = findViewById(R.id.fullscreen_content);
+
+        Canvas joystickCanvas;
+        Bitmap joystickBitmap;
+        Bitmap joystick_bkg;
+        Bitmap joystick_bal;
+
+        joystickBitmap = Bitmap.createBitmap(/*contentView.getWidth()/2, contentView.getHeight()/2,*/500, 500, Bitmap.Config.RGB_565);
+        joystick_bkg = BitmapFactory.decodeResource(getResources(), R.drawable.androidpadrealreal);
+        joystick_bal = BitmapFactory.decodeResource(getResources(), R.drawable.androidbalreal);
+        joystickCanvas = new Canvas();
+
+        joystickCanvas.setBitmap(joystickBitmap);
+        joystickCanvas.drawBitmap(joystick_bkg, new Matrix(), null);
+        joystickCanvas.drawBitmap(joystick_bal, new Matrix(), null);
 
         // Set up an instance of SystemUiHider to control the system UI for
         // this activity.
