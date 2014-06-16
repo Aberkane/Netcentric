@@ -1,10 +1,15 @@
 package com.zerokol.views;
 
+import com.zerokol.views.R;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -37,18 +42,26 @@ public class JoystickView extends View implements Runnable {
 	private int buttonRadius;
 	private int lastAngle = 0;
 	private int lastPower = 0;
+	private Drawable joystickPad;
+	private Drawable joystickButton;
 
 	public JoystickView(Context context) {
 		super(context);
+		joystickPad = context.getResources().getDrawable(R.drawable.androidpadrealreal);
+		joystickButton = context.getResources().getDrawable(R.drawable.androidbalreal);
 	}
 
 	public JoystickView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		joystickPad = context.getResources().getDrawable(R.drawable.androidpadrealreal);
+		joystickButton = context.getResources().getDrawable(R.drawable.androidbalreal);
 		initJoystickView();
 	}
 
 	public JoystickView(Context context, AttributeSet attrs, int defaultStyle) {
 		super(context, attrs, defaultStyle);
+		joystickPad = context.getResources().getDrawable(R.drawable.androidpadrealreal);
+		joystickButton = context.getResources().getDrawable(R.drawable.androidbalreal);
 		initJoystickView();
 	}
 
@@ -90,7 +103,7 @@ public class JoystickView extends View implements Runnable {
 		xPosition = (int) getWidth() / 2;
 		yPosition = (int) getWidth() / 2;
 
-		buttonRadius = (int) (d / 2 * 0.25);
+		buttonRadius = (int) (d / 2 * 0.1868);//0.25 -> 0.1868
 		joystickRadius = (int) (d / 2 * 0.75);
 	}
 
@@ -117,13 +130,22 @@ public class JoystickView extends View implements Runnable {
 		// super.onDraw(canvas);
 		centerX = (getWidth()) / 2;
 		centerY = (getHeight()) / 2;
+		
+		joystickPad.setBounds((int)(centerX - joystickRadius), (int)(centerY - joystickRadius), (int)(centerX + joystickRadius), (int)(centerY + joystickRadius)); //(int left, int top, int right, int bottom)
+		joystickPad.draw(canvas);
 
+		joystickButton.setBounds((int)(xPosition - buttonRadius), (int)(yPosition - buttonRadius), (int)(xPosition + buttonRadius), (int)(yPosition + buttonRadius)); //(int left, int top, int right, int bottom)
+		joystickButton.draw(canvas);
+
+/*
 		// painting the main circle
 		canvas.drawCircle((int) centerX, (int) centerY, joystickRadius,
 				mainCircle);
+		Log.d("onDrawInfo", "Main circle:[" + centerX + "," + centerY + "] radius [" + joystickRadius + "]");
 		// painting the secondary circle
 		canvas.drawCircle((int) centerX, (int) centerY, joystickRadius / 2,
 				secondaryCircle);
+		Log.d("onDrawInfo", "Second circle:[" + centerX + "," + centerY + "] radius [" + (joystickRadius / 2) + "]");
 		// paint lines
 		canvas.drawLine((float) centerX, (float) centerY, (float) centerX,
 				(float) (centerY - joystickRadius), verticalLine);
@@ -135,6 +157,8 @@ public class JoystickView extends View implements Runnable {
 
 		// painting the move button
 		canvas.drawCircle(xPosition, yPosition, buttonRadius, button);
+		Log.d("onDrawInfo", "Button circle:[" + xPosition + "," + yPosition + "] radius [" + buttonRadius + "]");
+*/
 	}
 
 	@Override

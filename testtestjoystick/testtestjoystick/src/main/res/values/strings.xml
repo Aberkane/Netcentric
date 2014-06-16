@@ -13,5 +13,6 @@
     <string name="left_lab">7</string>
     <string name="left_front_lab">8</string>
     <string name="center_lab">9</string>
+    <color name="red">#FF0000</color>
 
 </resources>
