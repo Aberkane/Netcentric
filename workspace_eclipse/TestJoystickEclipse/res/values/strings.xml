@@ -13,5 +13,8 @@
     <string name="left_lab">West</string>
     <string name="left_front_lab">Noord-West</string>
     <string name="center_lab">Midden-Rust</string>
+    <string name="change">Number of changes: </string>
+    <string name="powerHoog">Rijden!!!</string>
+    <string name="powerLaag">Stil staan!!!</string>
 
 </resources>
