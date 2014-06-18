@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">AbYaEr</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="test_highscores">Highscores:\n1)\tErik\n2)\tYadvir\n3)\tAbdel\nAndere info kan hier ook\n</string>
+    <string name="front_lab">Noord</string>
+    <string name="front_right_lab">Noord-Oost</string>
+    <string name="right_lab">Oost</string>
+    <string name="right_bottom_lab">Zuid-Oost</string>
+    <string name="bottom_lab">Zuid</string>
+    <string name="bottom_left_lab">Zuid-West</string>
+    <string name="left_lab">West</string>
+    <string name="left_front_lab">Noord-West</string>
+    <string name="center_lab">Midden-Rust</string>
+
+</resources>
