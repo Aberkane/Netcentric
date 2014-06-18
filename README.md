@@ -1,4 +1,4 @@
-Members of Netcentric:
+Members of ABYAER:
 ========
 
 - Erik van der Schaaf (erik.vanderschaaf@student.uva.nl)
