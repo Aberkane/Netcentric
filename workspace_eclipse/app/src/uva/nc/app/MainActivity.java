@@ -183,11 +183,11 @@ public class MainActivity extends ServiceActivity {
             }
         });
 
-        seekBar = (SeekBar)findViewById(R.id.seekBar);
-        editText = (TextView)findViewById(R.id.editText);
+        //seekBar = (SeekBar)findViewById(R.id.seekBar);
+        //editText = (TextView)findViewById(R.id.editText);
 
-        seekBar.setMax(100);
-        seekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+        //seekBar.setMax(100);
+        /*seekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
@@ -214,12 +214,12 @@ public class MainActivity extends ServiceActivity {
                 }
 
             }
-        });
+        });*/
 
     }
 
     private void refreshBluetoothControls() {
-        seekBar = (SeekBar)findViewById(R.id.seekBar);
+        //seekBar = (SeekBar)findViewById(R.id.seekBar);
 
         String slaveStatus = "Status not available";
         String slaveButton = "Start listening";
@@ -245,7 +245,7 @@ public class MainActivity extends ServiceActivity {
 
             if (bluetooth.slave.isConnected()) {
                 // Disabel the slider if the device is in slave mode. 
-                seekBar.setEnabled(false);
+                //seekBar.setEnabled(false);
                 slaveStatus = "Connected to " + bluetooth.slave.getRemoteDevice();
                 slaveButton = "Disconnect";
                 allowPingMaster = true;
@@ -265,7 +265,7 @@ public class MainActivity extends ServiceActivity {
                     }
                 });
             } else {
-                seekBar.setEnabled(true);
+                //seekBar.setEnabled(true);
 
                 slaveStatus = "Not listening";
                 slaveButton = "Start listening";
@@ -370,7 +370,7 @@ public class MainActivity extends ServiceActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            editText = (TextView)findViewById(R.id.editText);
+            //editText = (TextView)findViewById(R.id.editText);
             String action = intent.getAction();
 
             // Refresh on most Bluetooth or mBed events.
@@ -398,7 +398,7 @@ public class MainActivity extends ServiceActivity {
                     toastShort("From master:\n" + String.valueOf(obj));
                     // Set the received position in the editText widget and send the data to 
                     // the mBed.
-                    editText.setText(String.valueOf(args[0]));
+                    //editText.setText(String.valueOf(args[0]));
                     getMbed().manager.write(new MbedRequest(COMMAND_R, args));
 
                 } else {
