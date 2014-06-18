@@ -44,8 +44,9 @@ public class MainActivity extends Activity {
             			previousChange = direction;
             			numberOfChanges++;
             		}
-            		//TODO sturen wat hij nu moet zijn
             		rijdenTextView.setText(R.string.powerHoog);
+            		//TODO sturen wat hij nu moet zijn
+            		
             	}
             	else
             	{
@@ -54,8 +55,8 @@ public class MainActivity extends Activity {
             			previousChange = 9;
             			numberOfChanges++;
             		}
-            		//TODO sturen wat hij nu moet zijn
             		rijdenTextView.setText(R.string.powerLaag);
+            		//TODO sturen wat hij nu moet zijn
             	}
                 angleTextView.setText("Angle: " + String.valueOf(angle) + "°");
                 powerTextView.setText("Power: " + String.valueOf(power) + "%");

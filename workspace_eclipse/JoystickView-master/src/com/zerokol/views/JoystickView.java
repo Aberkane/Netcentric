@@ -16,14 +16,14 @@ public class JoystickView extends View implements Runnable {
 	// Constants
 	private final double RAD = 57.2957795;
 	public final static long DEFAULT_LOOP_INTERVAL = 100; // 100 ms
-	public final static int FRONT = 3;
-	public final static int FRONT_RIGHT = 4;
-	public final static int RIGHT = 5;
-	public final static int RIGHT_BOTTOM = 6;
-	public final static int BOTTOM = 7;
-	public final static int BOTTOM_LEFT = 8;
-	public final static int LEFT = 1;
-	public final static int LEFT_FRONT = 2;
+	public final static int FRONT = 3;        // N
+	public final static int FRONT_RIGHT = 4;  // NW
+	public final static int RIGHT = 5;        // W
+	public final static int RIGHT_BOTTOM = 6; // ZW
+	public final static int BOTTOM = 7;       // Z
+	public final static int BOTTOM_LEFT = 8;  // ZO
+	public final static int LEFT = 1;         // O
+	public final static int LEFT_FRONT = 2;   // NO
 	// Variables
 	private OnJoystickMoveListener onJoystickMoveListener; // Listener
 	private Thread thread = new Thread(this);
@@ -195,8 +195,7 @@ public class JoystickView extends View implements Runnable {
 		if (xPosition > centerX) {
 			if (yPosition < centerY) {
 				return lastAngle = (int) (Math.atan((yPosition - centerY)
-						/ (xPosition - centerX))
-						* RAD + 90);
+						/ (xPosition - centerX)) * RAD + 90);
 			} else if (yPosition > centerY) {
 				return lastAngle = (int) (Math.atan((yPosition - centerY)
 						/ (xPosition - centerX)) * RAD) + 90;
@@ -206,8 +205,7 @@ public class JoystickView extends View implements Runnable {
 		} else if (xPosition < centerX) {
 			if (yPosition < centerY) {
 				return lastAngle = (int) (Math.atan((yPosition - centerY)
-						/ (xPosition - centerX))
-						* RAD - 90);
+						/ (xPosition - centerX)) * RAD - 90);
 			} else if (yPosition > centerY) {
 				return lastAngle = (int) (Math.atan((yPosition - centerY)
 						/ (xPosition - centerX)) * RAD) - 90;

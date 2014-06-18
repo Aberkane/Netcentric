@@ -1,7 +1,9 @@
 package com.netcentric.abyaer;
 
+import com.netcentric.abyaer.R;
 import com.zerokol.views.JoystickView;
 import com.zerokol.views.JoystickView.OnJoystickMoveListener;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -10,6 +12,10 @@ public class MainActivity extends Activity {
     private TextView angleTextView;
     private TextView powerTextView;
     private TextView directionTextView;
+    private TextView changeTextView;
+    private TextView rijdenTextView;
+    private int numberOfChanges = 0;
+    private int previousChange = 9;
     // Importing also other views
     private JoystickView joystick;
 
@@ -22,6 +28,8 @@ public class MainActivity extends Activity {
         angleTextView = (TextView) findViewById(R.id.angleTextView);
         powerTextView = (TextView) findViewById(R.id.powerTextView);
         directionTextView = (TextView) findViewById(R.id.directionTextView);
+        changeTextView = (TextView) findViewById(R.id.changeTextView);
+        rijdenTextView = (TextView) findViewById(R.id.rijdenTextView);
         //Referencing also other views
         joystick = (JoystickView) findViewById(R.id.joystickView);
 
@@ -30,9 +38,30 @@ public class MainActivity extends Activity {
 
             @Override
             public void onValueChanged(int angle, int power, int direction) {
-                // TODO Auto-generated method stub
-                angleTextView.setText(" " + String.valueOf(angle) + "°");
-                powerTextView.setText(" " + String.valueOf(power) + "%");
+            	if(power > 30)
+            	{
+            		if(previousChange != direction)
+            		{
+            			previousChange = direction;
+            			numberOfChanges++;
+            		}
+            		rijdenTextView.setText(R.string.powerHoog);
+            		//TODO sturen wat hij nu moet zijn
+            		
+            	}
+            	else
+            	{
+            		if(previousChange != 9)
+            		{
+            			previousChange = 9;
+            			numberOfChanges++;
+            		}
+            		rijdenTextView.setText(R.string.powerLaag);
+            		//TODO sturen wat hij nu moet zijn
+            	}
+                angleTextView.setText("Angle: " + String.valueOf(angle) + "°");
+                powerTextView.setText("Power: " + String.valueOf(power) + "%");
+                changeTextView.setText(getResources().getString(R.string.change) + " " + String.valueOf(numberOfChanges));
                 switch (direction) {
                 case JoystickView.FRONT:
                     directionTextView.setText(R.string.front_lab);
