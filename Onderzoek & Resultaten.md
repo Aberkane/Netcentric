@@ -1,5 +1,6 @@
 ﻿
 Video streaming
+=========
 
 Voor het project was er een livestream nodig van een Android naar Android toestel. Na wat adviezen te hebben gelezen op het  internet bleek het opensource project libstreaming het best geschikt voor ons project.  Een populaire Android applicatie die van deze bibliotheek gebruik maakt is WIFI Camera. Voor de initiële benchmarks hebben we de applicatie op een Android telefoon geïnstalleerd om te performance te meten. 
 Na onderzoek bleek echter dat de framerate dusdanig laag was (<10 FPS) dat deze methode niet geschikt is voor live streaming.
