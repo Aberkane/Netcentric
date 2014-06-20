@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"><head profile="http://dublincore.org/documents/dcmi-terms/"><meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8"/><title xml:lang="en-US">- no title specified</title><meta name="DCTERMS.title" content="" xml:lang="en-US"/><meta name="DCTERMS.language" content="en-US" scheme="DCTERMS.RFC4646"/><meta name="DCTERMS.source" content="http://xml.openoffice.org/odf2xhtml"/><meta name="DCTERMS.issued" content="2014-06-20T19:52:44" scheme="DCTERMS.W3CDTF"/><meta name="DCTERMS.modified" content="2014-06-20T22:25:30" scheme="DCTERMS.W3CDTF"/><meta name="DCTERMS.provenance" content="" xml:lang="en-US"/><meta name="DCTERMS.subject" content="," xml:lang="en-US"/><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/" hreflang="en"/><link rel="schema.DCTERMS" href="http://purl.org/dc/terms/" hreflang="en"/><link rel="schema.DCTYPE" href="http://purl.org/dc/dcmitype/" hreflang="en"/><link rel="schema.DCAM" href="http://purl.org/dc/dcam/" hreflang="en"/><style type="text/css">
+	@page {  }
+	table { border-collapse:collapse; border-spacing:0; empty-cells:show }
+	td, th { vertical-align:top; font-size:12pt;}
+	h1, h2, h3, h4, h5, h6 { clear:both }
+	ol, ul { margin:0; padding:0;}
+	li { list-style: none; margin:0; padding:0;}
+	
+	li span. { clear: both; line-height:0; width:0; height:0; margin:0; padding:0; }
+	span.footnodeNumber { padding-right:1em; }
+	span.annotation_style_by_filter { font-size:95%; font-family:Arial; background-color:#fff000;  margin:0; border:0; padding:0;  }
+	* { margin:0;}
+	.P1 { font-size:12pt; font-family:Times New Roman; writing-mode:page; font-weight:bold; }
+	.Standard { font-size:12pt; font-family:Times New Roman; writing-mode:page; }
+	.T2 { font-style:italic; }
+	.T4 { font-style:italic; text-decoration:none ! important; }
+	.T5 { font-style:italic; text-decoration:none ! important; font-weight:normal; }
+	
+	{ }
+	</style></head><body dir="ltr" style="max-width:21.001cm;margin-top:2cm; margin-bottom:2cm; margin-left:2cm; margin-right:2cm; "><p class="Standard"> </p><p class="P1">Video streaming</p><p class="Standard"> </p><p class="Standard">Voor het project was er een livestream nodig van een Android naar Android toestel. Na wat adviezen te hebben gelezen op het  internet bleek het opensource project <span class="T5">libstreaming</span> het best geschikt voor ons project.  Een populaire Android applicatie die van deze bibliotheek gebruik maakt is WIFI Camera. Voor de initiële benchmarks hebben we de applicatie op een Android telefoon geïnstalleerd om te performance te meten. </p><p class="Standard">Na onderzoek bleek echter dat de framerate dusdanig laag was (&lt;10 FPS) dat deze methode niet geschikt is voor live streaming.</p><p class="Standard"> </p><p class="Standard">Hierna vonden we het project Peepers dat geen gebruik maakt van de<span class="T4"> libstreaming</span> bibliotheek maar wel streeft naar hetzelfde doel. Peepers maakt hierbij gebruik van de <span class="T2">MediaEncoder</span> API die al in Android zit verweven. Die video stream bestaat hierbij uit MJPEG (Motion-JPEG) wat in feiten bestaat uit het achtereenvolgens tonen van JPEG afbeeldingen. </p><p class="Standard"> </p><p class="Standard">De prestaties hierbij waren boven verwachting. Een JPEG stream met een afmeting van 640x480 behaalden meer dan 20 FPS, wat ruim geschikt is voor een live video stream. Het nadeel van deze applicatie is dat het gebruikt video formaat alleen word ondersteunt door een Firefox browser.</p><p class="Standard"> </p></body></html>
