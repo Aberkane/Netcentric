@@ -1,15 +1,20 @@
 package uva.nc.app;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.hardware.usb.UsbAccessory;
 import android.hardware.usb.UsbManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import java.io.Serializable;
@@ -29,6 +34,7 @@ import com.zerokol.views.JoystickView;
 
 
 public class MainActivity extends ServiceActivity {
+    // Joystick gedeelte.
     private TextView angleTextView;
     private TextView powerTextView;
     private TextView directionTextView;
@@ -36,8 +42,12 @@ public class MainActivity extends ServiceActivity {
     private TextView rijdenTextView;
     private int numberOfChanges = 0;
     private int previousChange = 9;
-    // Importing also other views
     private JoystickView joystick;
+    private Button scanButton;
+    private Button controlButton;
+    final Context context = this;
+    private String robotNumber = "Robot 0";
+    private String tikkerNumber = "Robot 1";
 
     private static final String TAG = MainActivity.class.getName();
 
@@ -82,10 +92,58 @@ public class MainActivity extends ServiceActivity {
         directionTextView = (TextView) findViewById(R.id.directionTextView);
         changeTextView = (TextView) findViewById(R.id.changeTextView);
         rijdenTextView = (TextView) findViewById(R.id.rijdenTextView);
+        scanButton = (Button) findViewById(R.id.scan_button);
         //Referencing also other views
         joystick = (JoystickView) findViewById(R.id.joystickView);
 
+        //Vraag om een nummer om mee te spelen
+        final NumberPicker np = new NumberPicker(context);
+        np.setMaxValue(100);
+        np.setMinValue(1);
+        np.setValue(1);
+        np.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+        np.setWrapSelectorWheel(false);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        alertDialogBuilder
+                .setTitle("Robot Number")
+                .setView(np)
+                .setCancelable(false)
+                .setPositiveButton("Choose", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // if this button is clicked, just close
+                        // the dialog box and do nothing
+                        robotNumber = "Robot " + np.getValue();
+                        if(robotNumber.equals(tikkerNumber))
+                        {
+                            scanButton.setText(getResources().getString(R.string.tik));
+                            scanButton.setClickable(true);
+                        }
+                        else
+                        {
+                            scanButton.setText(getResources().getString(R.string.ren_voor) + " " + tikkerNumber);
+                            scanButton.setClickable(false);
+                        }
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+
+        scanButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                scanButton.setClickable(false);
+                joystick.setClickable(false);
+                BluetoothService bluetooth = getBluetooth();
+                if (bluetooth != null) {
+                    bluetooth.slave.sendToMaster(-1);
+                }
+            }
+        });
+
         //Event listener that always returns the variation of the angle in degrees, motion power in percentage and direction of movement
+        joystick.setClickable(true);
         joystick.setOnJoystickMoveListener(new JoystickView.OnJoystickMoveListener() {
 
             @Override
@@ -96,6 +154,12 @@ public class MainActivity extends ServiceActivity {
                     {
                         previousChange = direction;
                         numberOfChanges++;
+                        if(joystick.isClickable()) {
+                            BluetoothService bluetooth = getBluetooth();
+                            if (bluetooth != null) {
+                                bluetooth.slave.sendToMaster(direction);
+                            }
+                        }
                     }
                     rijdenTextView.setText(R.string.powerHoog);
                     //TODO sturen wat hij nu moet zijn
@@ -107,6 +171,12 @@ public class MainActivity extends ServiceActivity {
                     {
                         previousChange = 9;
                         numberOfChanges++;
+                        if(joystick.isClickable()) {
+                            BluetoothService bluetooth = getBluetooth();
+                            if (bluetooth != null) {
+                                bluetooth.slave.sendToMaster(0);
+                            }
+                        }
                     }
                     rijdenTextView.setText(R.string.powerLaag);
                     //TODO sturen wat hij nu moet zijn
@@ -204,6 +274,16 @@ public class MainActivity extends ServiceActivity {
                 BluetoothService bluetooth = getBluetooth();
                 if (bluetooth != null) {
                     bluetooth.slave.sendToMaster(random.nextInt(2500));
+                }
+            }
+        });
+        controlButton = (Button) findViewById(R.id.controlButton);
+        controlButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BluetoothService bluetooth = getBluetooth();
+                if (bluetooth != null) {
+                    bluetooth.slave.sendToMaster(-2);
                 }
             }
         });
@@ -311,6 +391,7 @@ public class MainActivity extends ServiceActivity {
         deviceCountText.setText(connected);
         devicesButton.setEnabled(devicesButtonEnabled);
         pingMasterButton.setEnabled(allowPingMaster);
+        controlButton.setEnabled(allowPingMaster);
         pingSlavesButton.setEnabled(allowPingSlaves);
     }
 
@@ -415,7 +496,41 @@ public class MainActivity extends ServiceActivity {
                 // Slave received data from master.
                 Serializable obj = intent.getSerializableExtra(SlaveManager.EXTRA_OBJECT);
                 if (obj != null) {
-                    toastShort("From master:\n" + String.valueOf(obj));
+                    if(String.valueOf(obj).equals("Niks gescand!!"))
+                    {
+                        toastShort("Tikken is mislukt");
+                        scanButton.setClickable(true);
+                        joystick.setClickable(true);
+                    }
+                    else if(String.valueOf(obj).contains("Robot "))
+                    {
+                        if(robotNumber.equals(tikkerNumber))
+                        {
+                            toastShort("Tikken gelukt!");
+                            tikkerNumber = (String.valueOf(obj));
+                            scanButton.setText(getResources().getString(R.string.ren_voor) + " " + tikkerNumber);
+                        }
+                        else
+                        {
+                            tikkerNumber = (String.valueOf(obj));
+                            if(robotNumber.equals(tikkerNumber))
+                            {
+                                toastShort("Je bent getikt!");
+                                scanButton.setText(getResources().getString(R.string.tik));
+                                scanButton.setClickable(true);
+                            }
+                            else
+                            {
+                                toastShort(tikkerNumber + " is getikt!");
+                                scanButton.setText(getResources().getString(R.string.ren_voor) + " " + tikkerNumber);
+                            }
+                        }
+                        joystick.setClickable(true);
+                    }
+                    else
+                    {
+                        toastShort("From master:\n" + String.valueOf(obj));
+                    }
                 } else {
                     toastShort("From master:\nnull");
                 }
