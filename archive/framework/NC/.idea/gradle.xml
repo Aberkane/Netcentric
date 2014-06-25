@@ -7,10 +7,10 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
-            <option value="C:\Users\erik\Documents\GitHub\Netcentric\archive\framework\NC" />
-            <option value="C:\Users\erik\Documents\GitHub\Netcentric\archive\framework\NC\app" />
-            <option value="C:\Users\erik\Documents\GitHub\Netcentric\archive\framework\NC\lib" />
-            <option value="C:\Users\erik\Documents\GitHub\Netcentric\archive\framework\NC\lib2" />
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/lib" />
+            <option value="$PROJECT_DIR$/lib2" />
           </set>
         </option>
       </GradleProjectSettings>
