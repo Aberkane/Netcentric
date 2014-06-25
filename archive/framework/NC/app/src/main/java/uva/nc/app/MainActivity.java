@@ -35,12 +35,6 @@ import com.zerokol.views.JoystickView;
 
 public class MainActivity extends ServiceActivity {
     // Joystick gedeelte.
-    private TextView angleTextView;
-    private TextView powerTextView;
-    private TextView directionTextView;
-    private TextView changeTextView;
-    private TextView rijdenTextView;
-    private int numberOfChanges = 0;
     private int previousChange = 9;
     private JoystickView joystick;
     private Button scanButton;
@@ -49,15 +43,8 @@ public class MainActivity extends ServiceActivity {
     private String robotNumber = "Robot 0";
     private String tikkerNumber = "Robot 1";
 
-    private static final String TAG = MainActivity.class.getName();
-
     // Receiver implemented in separate class, see bottom of file.
     private final MainActivityReceiver receiver = new MainActivityReceiver();
-
-    // ID's for commands on mBed.
-    private static final int COMMAND_SUM = 1;
-    private static final int COMMAND_AVG = 2;
-    private static final int COMMAND_LED = 3;
 
     // BT Controls.
     private TextView listenerStatusText;
@@ -68,17 +55,8 @@ public class MainActivity extends ServiceActivity {
     private Button pingMasterButton;
     private Button pingSlavesButton;
 
-    // mBed controls.
-    private TextView mbedConnectedText;
-    private Button mbedSumButton;
-    private Button mbedAvgButton;
-    private Button mbedLedButton;
-
     // Random data for sample events.
     private Random random = new Random();
-
-    // Accessory to connect to when service is connected.
-    private UsbAccessory toConnect;
 
 
     @Override
@@ -86,12 +64,6 @@ public class MainActivity extends ServiceActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         attachControls();
-
-        angleTextView = (TextView) findViewById(R.id.angleTextView);
-        powerTextView = (TextView) findViewById(R.id.powerTextView);
-        directionTextView = (TextView) findViewById(R.id.directionTextView);
-        changeTextView = (TextView) findViewById(R.id.changeTextView);
-        rijdenTextView = (TextView) findViewById(R.id.rijdenTextView);
         scanButton = (Button) findViewById(R.id.scan_button);
         //Referencing also other views
         joystick = (JoystickView) findViewById(R.id.joystickView);
@@ -153,7 +125,6 @@ public class MainActivity extends ServiceActivity {
                     if(previousChange != direction)
                     {
                         previousChange = direction;
-                        numberOfChanges++;
                         if(joystick.isClickable()) {
                             BluetoothService bluetooth = getBluetooth();
                             if (bluetooth != null) {
@@ -161,8 +132,6 @@ public class MainActivity extends ServiceActivity {
                             }
                         }
                     }
-                    rijdenTextView.setText(R.string.powerHoog);
-                    //TODO sturen wat hij nu moet zijn
 
                 }
                 else
@@ -170,7 +139,6 @@ public class MainActivity extends ServiceActivity {
                     if(previousChange != 9)
                     {
                         previousChange = 9;
-                        numberOfChanges++;
                         if(joystick.isClickable()) {
                             BluetoothService bluetooth = getBluetooth();
                             if (bluetooth != null) {
@@ -178,56 +146,15 @@ public class MainActivity extends ServiceActivity {
                             }
                         }
                     }
-                    rijdenTextView.setText(R.string.powerLaag);
-                    //TODO sturen wat hij nu moet zijn
-                }
-                angleTextView.setText("Angle: " + String.valueOf(angle) + "°");
-                powerTextView.setText("Power: " + String.valueOf(power) + "%");
-                changeTextView.setText(getResources().getString(R.string.change) + " " + String.valueOf(numberOfChanges));
-                switch (direction) {
-                    case JoystickView.FRONT:
-                        directionTextView.setText(R.string.front_lab);
-                        break;
-                    case JoystickView.FRONT_RIGHT:
-                        directionTextView.setText(R.string.front_right_lab);
-                        break;
-                    case JoystickView.RIGHT:
-                        directionTextView.setText(R.string.right_lab);
-                        break;
-                    case JoystickView.RIGHT_BOTTOM:
-                        directionTextView.setText(R.string.right_bottom_lab);
-                        break;
-                    case JoystickView.BOTTOM:
-                        directionTextView.setText(R.string.bottom_lab);
-                        break;
-                    case JoystickView.BOTTOM_LEFT:
-                        directionTextView.setText(R.string.bottom_left_lab);
-                        break;
-                    case JoystickView.LEFT:
-                        directionTextView.setText(R.string.left_lab);
-                        break;
-                    case JoystickView.LEFT_FRONT:
-                        directionTextView.setText(R.string.left_front_lab);
-                        break;
-                    default:
-                        directionTextView.setText(R.string.center_lab);
                 }
             }
         }, JoystickView.DEFAULT_LOOP_INTERVAL);
-
-        // If this intent was started with an accessory, store it temporarily and clear once connected.
-        UsbAccessory accessory = getIntent().getParcelableExtra(UsbManager.EXTRA_ACCESSORY);
-        if (accessory != null) {
-            this.toConnect = accessory;
-        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         registerReceiver(receiver, receiver.getIntentFilter());
-        refreshBluetoothControls();
-        refreshMbedControls();
     }
 
     @Override
@@ -240,15 +167,6 @@ public class MainActivity extends ServiceActivity {
     @Override
     protected void onBluetoothReady(BluetoothService bluetooth) {
         refreshBluetoothControls();
-    }
-
-    @Override
-    protected void onMbedReady(MbedService mbed) {
-        if (toConnect != null) {
-            mbed.manager.attach(toConnect);
-            toConnect = null;
-        }
-        refreshMbedControls();
     }
 
 
@@ -266,7 +184,6 @@ public class MainActivity extends ServiceActivity {
                 startActivity(launch);
             }
         });
-        mbedConnectedText = (TextView)findViewById(R.id.mbed_connected);
         pingMasterButton = (Button)findViewById(R.id.ping_master);
         pingMasterButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -295,34 +212,6 @@ public class MainActivity extends ServiceActivity {
                 if (bluetooth != null) {
                     bluetooth.master.sendToAll(random.nextInt(10000) + 5000);
                 }
-            }
-        });
-
-        // mBed controls.
-        mbedSumButton = (Button)findViewById(R.id.mbed_sum);
-        mbedSumButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                float[] args = getRandomFloatArray(10);
-                toastShort("Sum of: \n" + Arrays.toString(args));
-                getMbed().manager.write(new MbedRequest(COMMAND_SUM, args));
-            }
-        });
-        mbedAvgButton = (Button)findViewById(R.id.mbed_avg);
-        mbedAvgButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                float[] args = getRandomFloatArray(10);
-                toastShort("Avg of:\n" + Arrays.toString(args));
-                getMbed().manager.write(new MbedRequest(COMMAND_AVG, args));
-            }
-        });
-        mbedLedButton = (Button)findViewById(R.id.mbed_led);
-        mbedLedButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                float[] args = getRandomLedArray();
-                getMbed().manager.write(new MbedRequest(COMMAND_LED, args));
             }
         });
     }
@@ -395,46 +284,6 @@ public class MainActivity extends ServiceActivity {
         pingSlavesButton.setEnabled(allowPingSlaves);
     }
 
-    private void refreshMbedControls() {
-        String connText = getString(R.string.not_connected); // if you want to localize
-        boolean enableButtons = false;
-
-        MbedService mbed = getMbed();
-        if (mbed != null && mbed.manager.areChannelsOpen()) {
-            connText = getString(R.string.connected);
-            enableButtons = true;
-        }
-
-        mbedConnectedText.setText(connText);
-        mbedAvgButton.setEnabled(enableButtons);
-        mbedSumButton.setEnabled(enableButtons);
-        mbedLedButton.setEnabled(enableButtons);
-    }
-
-
-    // mBed random data.
-    private float[] getRandomFloatArray(int maxLength) {
-        if (maxLength < 1) {
-            maxLength = 1;
-        }
-
-        int length = random.nextInt(maxLength + 1);
-        float[] arr = new float[length];
-        for (int i = 0; i < length; i++) {
-            arr[i] = random.nextFloat();
-        }
-
-        return arr;
-    }
-
-    private float[] getRandomLedArray() {
-        float[] arr = new float[4];
-        for (int i = 0; i < 4; i++) {
-            arr[i] = random.nextBoolean() ? 0.0f : 1.0f;
-        }
-        return arr;
-    }
-
 
     // Broadcast receiver which handles incoming events. If it were smaller, inline it.
     private class MainActivityReceiver extends BroadcastReceiver {
@@ -485,7 +334,6 @@ public class MainActivity extends ServiceActivity {
             }
             for (String update : MBED_REFRESH_ON) {
                 if (action.equals(update)) {
-                    refreshMbedControls();
                     break;
                 }
             }
@@ -543,32 +391,6 @@ public class MainActivity extends ServiceActivity {
                     toastShort("From " + device + "\n" + String.valueOf(obj));
                 } else {
                     toastShort("From " + device + "\nnull!");
-                }
-            } else if (action.equals(MbedManager.DATA_READ)) {
-
-                // mBed data received.
-                MbedResponse response = intent.getParcelableExtra(MbedManager.EXTRA_DATA);
-                if (response != null) {
-                    // Errors handled as separate case, but this is just sample code.
-                    if (response.hasError()) {
-                        toastLong("Error! " + response);
-                        return;
-                    }
-
-                    float[] values = response.getValues();
-                    if (response.getCommandId() == COMMAND_AVG) {
-                        if (values == null || values.length != 1) {
-                            toastShort("Error!");
-                        } else {
-                            toastShort("AVG: " + String.valueOf(values[0]));
-                        }
-                    } else if (response.getCommandId() == COMMAND_SUM) {
-                        if (values == null || values.length != 1) {
-                            toastShort("Error!");
-                        } else {
-                            toastShort("SUM: " + String.valueOf(values[0]));
-                        }
-                    }
                 }
             }
         }
