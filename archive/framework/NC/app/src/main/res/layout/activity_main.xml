@@ -21,56 +21,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="mBed"
-                android:id="@+id/mbed_title"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textStyle="bold"
-                android:layout_marginBottom="2dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:id="@+id/mbed_connected"
-                android:text="@string/not_connected" />
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Sum"
-                    android:id="@+id/mbed_sum"
-                    android:enabled="false"
-                    android:layout_weight="1" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Average"
-                    android:id="@+id/mbed_avg"
-                    android:layout_alignBottom="@+id/scrollView"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:enabled="false"
-                    android:layout_weight="1" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="LED party"
-                    android:id="@+id/mbed_led"
-                    android:enabled="false"
-                    android:layout_weight="1" />
-            </LinearLayout>
-
 
             <TextView
                 android:layout_width="wrap_content"
@@ -216,42 +166,22 @@
             android:layout_height="fill_parent"
             android:layout_weight=".5">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/highscoreTitleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/highscores_title"
+                android:textStyle="bold"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="10dp"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
+                android:id="@+id/highscoreTextView"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
                 android:layout_weight="0.4"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/angleTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/spatie" />
-
-                <TextView
-                    android:id="@+id/powerTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/spatie" />
-
-                <TextView
-                    android:id="@+id/directionTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/spatie" />
-
-                <TextView
-                    android:id="@+id/changeTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/spatie" />
-
-                <TextView
-                    android:id="@+id/rijdenTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/spatie" />
-            </LinearLayout>
+                android:text="@string/highscores" />
 
             <Button
                 android:layout_width="fill_parent"
