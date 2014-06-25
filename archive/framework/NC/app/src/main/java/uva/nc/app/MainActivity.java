@@ -11,6 +11,7 @@ import android.content.IntentFilter;
 import android.hardware.usb.UsbAccessory;
 import android.hardware.usb.UsbManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -111,6 +112,13 @@ public class MainActivity extends ServiceActivity {
                 if (bluetooth != null) {
                     bluetooth.slave.sendToMaster(-1);
                 }
+                // Create a handler
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable(){
+                    @Override
+                    public void run() {
+                        scanButton.setClickable(true);
+                }}, 3000);
             }
         });
 
